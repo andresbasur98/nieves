@@ -1,23 +1,50 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import styled, {keyframes} from 'styled-components'
+import styled from 'styled-components'
 import useSound from 'use-sound'
+import { Expericene } from '../components/experience/Expericene'
 
 
-// import music from '../public/assets/music/MUUS-Ahi.mp3';
+
+const Loader =  () => {
+  return (
+    <div style={{width: '100vw', height: '100vh', backgroundColor:'black'}}>
+      <h1 style={{color: 'white'}}>Cargando....</h1>
+    </div>
+  )
+}
 
 export default function Home() {
 
   const [playing, setPlaying] = useState(false);
-  const [volumeRange, setVolumeRange] = useState(50)
+  const [volumeRange, setVolumeRange] = useState(50)  
+  const [soundLoad, setSoundLoad] = useState(false)
   const volume = useRef(0.5);
-
   const [ play, {stop}] = useSound('/assets/music/CAJUN-Pizzolo.mp3', {
-    volume: volume.current
+    volume: volume.current,
+    onload: () => {
+      setSoundLoad(true)
+      console.log('SOUND LOAD')
+    }
   });
 
+
+  if(!soundLoad){
+    return (
+      <Loader />
+    )
+  }
+
+
+
+  // useEffect(() => {
+  //   // console.log('MUSIC ==>', music)
+  //   console.log('IMAGE ==>', imagee)
+  //   console.log('Play ==>', play)
+  // }, [imagee])
+  
 
   const handleClick = () => {
     setPlaying(!playing)
@@ -27,15 +54,13 @@ export default function Home() {
   }
 
   const handleVolume = (e) => {
-    console.log(e)
     const valueVolume = e.target.value
     setVolumeRange(valueVolume);
     volume.current = valueVolume / 100;
-    console.log('VOLUMEN: ',volume.current)
   }
 
   return (
-    <div>
+    <div style={{position:'relative', overflow:'hidden'}}>
       <Head>
         <title>John Snow</title>
         <meta 
@@ -44,11 +69,10 @@ export default function Home() {
           para ofrecerte lo que buscas" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
 
-      <Container>
       <Luz />
-      <Luz top={'69%'} left={'70%'} background={'#82d4fb'}/>
+      <Luz top={'27%'} left={'70%'} background={'#82d4fb'} width={'500px'}/>
+      <Container>
         <Title
           style={{borderTopLeftRadius: '999px'}}
           animate={!playing ? {opacity: 1} : {opacity: 0}} 
@@ -74,14 +98,14 @@ export default function Home() {
               animate={!playing ? {y: -50, x: -10} : {y:0}} 
               transition={{ type: "tween" }} 
             >
-              <Image src="/assets/images/dj-disc1.jpg" layout='fill' objectFit='cover' style={{borderTopLeftRadius: '999px', objectFit:'cover'}}/>
+              <Image priority={true} src="/assets/images/dj-disc1.jpg" layout='fill' objectFit='cover' style={{borderTopLeftRadius: '999px', objectFit:'cover'}}/>
             </Disc>
             <Disc 
               style={{borderTopRightRadius: '999px', width: '50%', height: '50%'}}
               animate={!playing ? {y: -50, x: 10} : {y:0}}  
               transition={{ type: "tween" }} 
             >
-              <Image src="/assets/images/dj-disc3.jpg" layout='fill' objectFit='cover' style={{borderTopRightRadius: '999px', objectFit:'cover'}} />
+              <Image priority={true} src="/assets/images/dj-disc3.jpg" layout='fill' objectFit='cover' style={{borderTopRightRadius: '999px', objectFit:'cover'}} />
             </Disc>
 
             <Disc 
@@ -89,14 +113,14 @@ export default function Home() {
               animate={!playing ? {y: 50, x: -10} : {y:0}} 
               transition={{ type: "tween" }} 
             >
-              <Image src="/assets/images/dj-disc2.jpg" layout='fill' objectFit='cover' style={{borderBottomLeftRadius: '999px', objectFit:'cover'}}/>
+              <Image priority={true} src="/assets/images/dj-disc2.jpg" layout='fill' objectFit='cover' style={{borderBottomLeftRadius: '999px', objectFit:'cover'}}/>
             </Disc>
             <Disc 
               style={{borderBottomRightRadius: '999px', width: '50%', height: '50%'}}
               animate={!playing ? {y: 50, x: 10} : {y:0}} 
               transition={{ type: "tween" }} 
             >
-              <Image src="/assets/images/dj-disc4.jpg" layout='fill' objectFit='cover' style={{borderBottomRightRadius: '999px', objectFit:'cover'}}/>
+              <Image priority={true} src="/assets/images/dj-disc4.jpg" layout='fill' objectFit='cover' style={{borderBottomRightRadius: '999px', objectFit:'cover'}}/>
             </Disc>
         </DiscContainer>
         {
@@ -108,7 +132,9 @@ export default function Home() {
         }
 
       </Container>
-      <audio src="/assets/music/MUUS-Ahi.mp3" autoPlay loop></audio>
+      <Expericene />
+
+      <audio src="/assets/music/MUUS-Ahi.mp3" preload='auto' autoPlay loop></audio>
     </div>
   )
 }
@@ -116,7 +142,7 @@ export default function Home() {
 const Container = styled.main`
     position: relative;
     background: #222;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -238,9 +264,9 @@ const Fader = styled.input`
 
 `
 
-const Luz = styled.input`
+const Luz = styled.div`
     position: absolute;
-    width: 600px;
+    width: ${props => props.width || '600px'};
     height: 355px;
     z-index: 1;
     background: ${props => props.background || '#ff6afb'};

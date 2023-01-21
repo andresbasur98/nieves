@@ -2,7 +2,12 @@
   font-family: 'Orbitron';
   src: url('../public/assets/fonts/Orbitron-SemiBold.ttf');
   src: url('../public/assets/fonts/Orbitron-ExtraBold.ttf');
-  
+}
+
+@font-face{
+  font-family: 'Quicksand';
+  src: url('../public/assets/fonts/Quicksand-SemiBold.ttf');
+  src: url('../public/assets/fonts/Quicksand-Medium.ttf');
 }
 html,
 body {
