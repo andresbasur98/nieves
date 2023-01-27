@@ -22,7 +22,7 @@ export default function Home() {
   const [volumeRange, setVolumeRange] = useState(50)  
   const [soundLoad, setSoundLoad] = useState(false)
   const volume = useRef(0.5);
-  const [ play, {stop}] = useSound('/assets/music/CAJUN-Pizzolo.mp3', {
+  const [ play, {stop}] = useSound('/assets/music/MUUS-Ahi.mp3', {
     volume: volume.current,
     onload: () => {
       setSoundLoad(true)

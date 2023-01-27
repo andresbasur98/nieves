@@ -119,4 +119,14 @@ const TextContainer = styled.div`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  @media screen and (max-width: 600px) {
+
+    height: 77%;
+
+    p {
+      font-size: 14px;
+      line-height: 28px;
+    }
+  }
 `
